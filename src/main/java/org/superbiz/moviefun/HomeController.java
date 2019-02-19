@@ -1,6 +1,9 @@
 package org.superbiz.moviefun;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Controller;
+import org.springframework.transaction.PlatformTransactionManager;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.superbiz.moviefun.albums.Album;
 import org.superbiz.moviefun.albums.AlbumFixtures;
@@ -13,6 +16,14 @@ import java.util.Map;
 
 @Controller
 public class HomeController {
+
+    @Autowired
+    //@Qualifier("albumsTransactionManager")
+    PlatformTransactionManager albumsTransactionManager;
+
+    @Autowired
+   //@Qualifier("albumsTransactionManager")
+    PlatformTransactionManager moviesTransactionManager;
 
     private final MoviesBean moviesBean;
     private final AlbumsBean albumsBean;
