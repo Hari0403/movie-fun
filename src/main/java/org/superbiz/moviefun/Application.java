@@ -1,6 +1,7 @@
 package org.superbiz.moviefun;
 
 import com.mysql.jdbc.jdbc2.optional.MysqlDataSource;
+import com.zaxxer.hikari.HikariDataSource;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.SpringApplication;
@@ -42,15 +43,15 @@ public class Application {
 
     @Bean
     public DataSource albumsDataSource(DatabaseServiceCredentials serviceCredentials) {
-        MysqlDataSource dataSource = new MysqlDataSource();
-        dataSource.setURL(serviceCredentials.jdbcUrl("albums-mysql"));
+        HikariDataSource dataSource = new HikariDataSource();
+        dataSource.setJdbcUrl(serviceCredentials.jdbcUrl("albums-mysql"));
         return dataSource;
     }
 
     @Bean
     public DataSource moviesDataSource(DatabaseServiceCredentials serviceCredentials) {
-        MysqlDataSource dataSource = new MysqlDataSource();
-        dataSource.setURL(serviceCredentials.jdbcUrl("movies-mysql"));
+        HikariDataSource dataSource = new HikariDataSource();
+        dataSource.setJdbcUrl(serviceCredentials.jdbcUrl("movies-mysql"));
         return dataSource;
     }
 
@@ -85,16 +86,16 @@ public class Application {
     }
 
     @Bean
-    public PlatformTransactionManager albumsTransactionManager(EntityManagerFactory emf) {
+    public PlatformTransactionManager albumsTransactionManager(EntityManagerFactory albumsEntityManagerFactory) {
         JpaTransactionManager txManager = new JpaTransactionManager();
-        txManager.setEntityManagerFactory(emf);
+        txManager.setEntityManagerFactory(albumsEntityManagerFactory);
         return txManager;
     }
 
     @Bean
-    public PlatformTransactionManager moviesTransactionManager(EntityManagerFactory emf) {
+    public PlatformTransactionManager moviesTransactionManager(EntityManagerFactory moviesEntityManagerFactory) {
         JpaTransactionManager txManager = new JpaTransactionManager();
-        txManager.setEntityManagerFactory(emf);
+        txManager.setEntityManagerFactory(moviesEntityManagerFactory);
         return txManager;
     }
 }
